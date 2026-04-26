@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404dash — Dashboard UI Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; background: #0F1117; font-family: 'DM Sans', system-ui, sans-serif; color: #F1F5F9; -webkit-font-smoothing: antialiased; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #2A2D3E; border-radius: 3px; }
+input, button, select { font-family: inherit; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="Sidebar.jsx"></script>
+<script type="text/babel" src="Header.jsx"></script>
+<script type="text/babel" src="MetricCard.jsx"></script>
+<script type="text/babel" src="Chart.jsx"></script>
+<script type="text/babel" src="Table.jsx"></script>
+
+<script type="text/babel">
+
+// ─── Mock Data ──────────────────────────────────────────────
+const CHART_VISITORS = [4200,5100,4700,6200,5800,7100,6500,8200,7800,9100,8600,10200,9700,11000];
+const CHART_REVENUE  = [1.2,1.5,1.3,1.8,2.0,1.7,2.3,2.1,2.6,2.4,3.0,2.8,3.4,3.2];
+const CHART_CONV     = [2.8,3.1,2.9,3.5,3.2,3.8,3.4,4.1,3.7,4.3,3.9,4.6,4.2,4.8];
+
+const BAR_DATA = [
+  { label: '월', value: 420 }, { label: '화', value: 380 }, { label: '수', value: 510 },
+  { label: '목', value: 470 }, { label: '금', value: 620 }, { label: '토', value: 340 },
+  { label: '일', value: 280 },
+];
+
+const DONUT_SEGMENTS = [
+  { label: 'Direct', value: 42, color: '#6366F1' },
+  { label: 'Organic', value: 28, color: '#10B981' },
+  { label: 'Referral', value: 18, color: '#F59E0B' },
+  { label: 'Social', value: 12, color: '#38BDF8' },
+];
+
+const TABLE_ROWS = [
+  { page: '/dashboard', visitors: 18420, bounce: '34%', duration: '4m 12s', status: '활성' },
+  { page: '/analytics', visitors: 9310, bounce: '41%', duration: '3m 05s', status: '활성' },
+  { page: '/reports', visitors: 6840, bounce: '52%', duration: '2m 44s', status: '대기중' },
+  { page: '/settings', visitors: 3120, bounce: '68%', duration: '1m 22s', status: '활성' },
+  { page: '/users', visitors: 2880, bounce: '45%', duration: '2m 58s', status: '오류' },
+];
+
+const TABLE_COLS = [
+  { key: 'page', label: '페이지', sortable: true },
+  { key: 'visitors', label: '방문자', sortable: true,
+    render: v => <span style={{ fontFamily: "'DM Mono', monospace", color: '#F1F5F9' }}>{v.toLocaleString()}</span> },
+  { key: 'bounce', label: '이탈률', sortable: false },
+  { key: 'duration', label: '평균 체류', sortable: false,
+    render: v => <span style={{ fontFamily: "'DM Mono', monospace", color: '#94A3B8' }}>{v}</span> },
+  { key: 'status', label: '상태', render: v => <StatusBadge status={v} /> },
+];
+
+const NOTIFICATIONS = [
+  { id: 1, icon: '▲', iconColor: '#10B981', title: '트래픽 급증', desc: '방문자 수가 평균 대비 40% 증가했습니다.', time: '2분 전', unread: true },
+  { id: 2, icon: '⚠', iconColor: '#F59E0B', title: '전환율 하락', desc: '/reports 페이지의 전환율이 2.1%로 낮아졌습니다.', time: '14분 전', unread: true },
+  { id: 3, icon: '✓', iconColor: '#6366F1', title: '보고서 생성 완료', desc: '4월 월간 보고서가 준비되었습니다.', time: '1시간 전', unread: false },
+  { id: 4, icon: '✕', iconColor: '#EF4444', title: 'API 오류 감지', desc: '/api/v2/events에서 500 에러가 발생했습니다.', time: '3시간 전', unread: false },
+];
+
+// ─── Screen: Overview ──────────────────────────────────────
+function OverviewScreen() {
+  return (
+    <div style={appStyles.content} data-screen-label="overview">
+      <Header
+        title="개요"
+        subtitle="Overview · 2024년 4월"
+        actions={[{ label: '내보내기', primary: false }, { label: '+ 보고서', primary: true }]}
+      />
+      <div style={appStyles.scrollArea}>
+
+        {/* KPI Row */}
+        <div style={appStyles.kpiGrid}>
+          <MetricCard label="총 방문자" value="84,219" delta="12.4% 전월 대비" deltaPositive={true} accent={true} />
+          <MetricCard label="순 방문자" value="61,034" delta="8.7% 전월 대비" deltaPositive={true} />
+          <MetricCard label="총 수익" value="₩2.4M" delta="18.2% 전월 대비" deltaPositive={true} />
+          <MetricCard label="전환율" value="3.82%" delta="0.3%p 전월 대비" deltaPositive={false} />
+        </div>
+
+        {/* Charts Row */}
+        <div style={appStyles.chartGrid}>
+
+          {/* Line: Visitors */}
+          <div style={appStyles.chartCard}>
+            <div style={appStyles.chartHeader}>
+              <div>
+                <div style={appStyles.chartTitle}>방문자 추이</div>
+                <div style={appStyles.chartSub}>최근 14일 · Visitor trend</div>
+              </div>
+              <span style={appStyles.chartBadge}>일별</span>
+            </div>
+            <LineChart data={CHART_VISITORS} color="#6366F1" height={140} />
+          </div>
+
+          {/* Line: Revenue */}
+          <div style={appStyles.chartCard}>
+            <div style={appStyles.chartHeader}>
+              <div>
+                <div style={appStyles.chartTitle}>수익 추이</div>
+                <div style={appStyles.chartSub}>최근 14일 · Revenue (M₩)</div>
+              </div>
+              <span style={appStyles.chartBadge}>일별</span>
+            </div>
+            <LineChart data={CHART_REVENUE} color="#10B981" height={140} />
+          </div>
+
+          {/* Bar: Daily */}
+          <div style={appStyles.chartCard}>
+            <div style={appStyles.chartHeader}>
+              <div>
+                <div style={appStyles.chartTitle}>요일별 방문</div>
+                <div style={appStyles.chartSub}>이번 주 · Visits by weekday</div>
+              </div>
+            </div>
+            <BarChart data={BAR_DATA} colors={['#6366F1','#818CF8','#6366F1','#818CF8','#6366F1','#475569','#475569']} height={140} />
+          </div>
+
+          {/* Donut: Traffic sources */}
+          <div style={appStyles.chartCard}>
+            <div style={appStyles.chartHeader}>
+              <div>
+                <div style={appStyles.chartTitle}>유입 경로</div>
+                <div style={appStyles.chartSub}>Traffic sources</div>
+              </div>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginTop: 8 }}>
+              <DonutChart segments={DONUT_SEGMENTS} size={110} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {DONUT_SEGMENTS.map(s => (
+                  <div key={s.label} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <div style={{ width: 8, height: 8, borderRadius: '50%', background: s.color, flexShrink: 0 }} />
+                    <span style={{ fontSize: 12, color: '#94A3B8' }}>{s.label}</span>
+                    <span style={{ fontSize: 12, fontFamily: "'DM Mono',monospace", color: '#F1F5F9', marginLeft: 'auto' }}>{s.value}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Table */}
+        <div style={appStyles.section}>
+          <div style={appStyles.sectionHeader}>
+            <div style={appStyles.chartTitle}>페이지별 성과</div>
+            <div style={appStyles.chartSub}>Page performance</div>
+          </div>
+          <DataTable columns={TABLE_COLS} rows={TABLE_ROWS} />
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+// ─── Screen: Analytics ──────────────────────────────────────
+function AnalyticsScreen() {
+  const [range, setRange] = React.useState('7d');
+  return (
+    <div style={appStyles.content} data-screen-label="analytics">
+      <Header title="분석" subtitle="Analytics" />
+      <div style={appStyles.scrollArea}>
+
+        <div style={{ display: 'flex', gap: 8, padding: '20px 24px 0' }}>
+          {['7d','30d','90d','1y'].map(r => (
+            <button key={r} onClick={() => setRange(r)} style={{
+              padding: '6px 14px', borderRadius: 6, fontSize: 12, fontWeight: 500,
+              cursor: 'pointer', fontFamily: 'inherit', border: 'none',
+              background: range === r ? '#6366F1' : '#1A1D27',
+              color: range === r ? 'white' : '#94A3B8',
+              border: range === r ? 'none' : '1px solid #2A2D3E',
+            }}>{r}</button>
+          ))}
+        </div>
+
+        <div style={appStyles.kpiGrid}>
+          <MetricCard label="세션" value="124,039" delta="9.2%" deltaPositive={true} accent />
+          <MetricCard label="이탈률" value="41.3%" delta="1.8%p" deltaPositive={false} />
+          <MetricCard label="평균 체류" value="3m 28s" delta="0m 14s" deltaPositive={true} />
+          <MetricCard label="페이지뷰" value="392K" delta="22.1%" deltaPositive={true} />
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, padding: '0 24px 24px' }}>
+          <div style={{ ...appStyles.chartCard, gridColumn: 'span 2' }}>
+            <div style={appStyles.chartHeader}>
+              <div><div style={appStyles.chartTitle}>전환율 추이</div><div style={appStyles.chartSub}>Conversion rate trend</div></div>
+            </div>
+            <LineChart data={CHART_CONV} color="#818CF8" height={180} />
+          </div>
+          <div style={appStyles.chartCard}>
+            <div style={appStyles.chartHeader}><div><div style={appStyles.chartTitle}>채널별 방문</div></div></div>
+            <BarChart data={[{label:'Direct',value:380},{label:'Organic',value:260},{label:'Referral',value:170},{label:'Social',value:110}]} colors={['#6366F1','#10B981','#F59E0B','#38BDF8']} height={140} />
+          </div>
+          <div style={appStyles.chartCard}>
+            <div style={appStyles.chartHeader}><div><div style={appStyles.chartTitle}>기기 분포</div><div style={appStyles.chartSub}>Device breakdown</div></div></div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginTop: 8 }}>
+              <DonutChart segments={[{label:'Desktop',value:58,color:'#6366F1'},{label:'Mobile',value:34,color:'#818CF8'},{label:'Tablet',value:8,color:'#2A2E42'}]} size={110} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {[{label:'Desktop',val:'58%',color:'#6366F1'},{label:'Mobile',val:'34%',color:'#818CF8'},{label:'Tablet',val:'8%',color:'#2A2E42'}].map(s=>(
+                  <div key={s.label} style={{display:'flex',alignItems:'center',gap:8}}>
+                    <div style={{width:8,height:8,borderRadius:'50%',background:s.color}} />
+                    <span style={{fontSize:12,color:'#94A3B8'}}>{s.label}</span>
+                    <span style={{fontSize:12,fontFamily:"'DM Mono',monospace",color:'#F1F5F9',marginLeft:'auto'}}>{s.val}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Screen: Reports / Table ──────────────────────────────
+function ReportsScreen() {
+  const rows = [
+    {id:'rpt-001',name:'4월 월간 요약',type:'Monthly',created:'2024-04-01',updated:'2024-04-26',status:'활성'},
+    {id:'rpt-002',name:'Q1 분기 보고서',type:'Quarterly',created:'2024-03-31',updated:'2024-04-15',status:'활성'},
+    {id:'rpt-003',name:'주간 트래픽',type:'Weekly',created:'2024-04-20',updated:'2024-04-26',status:'대기중'},
+    {id:'rpt-004',name:'전환 분석',type:'Custom',created:'2024-04-10',updated:'2024-04-22',status:'활성'},
+    {id:'rpt-005',name:'오류 추적',type:'Custom',created:'2024-04-05',updated:'2024-04-25',status:'오류'},
+    {id:'rpt-006',name:'사용자 행동 분석',type:'Custom',created:'2024-03-20',updated:'2024-04-18',status:'비활성'},
+  ];
+  const cols = [
+    {key:'id',label:'ID',render:v=><span style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:'#475569'}}>{v}</span>},
+    {key:'name',label:'보고서 이름',sortable:true,render:v=><span style={{fontWeight:500}}>{v}</span>},
+    {key:'type',label:'유형',render:v=><span style={{fontSize:11,padding:'2px 8px',borderRadius:4,background:'rgba(99,102,241,0.1)',color:'#818CF8',border:'1px solid rgba(99,102,241,0.2)'}}>{v}</span>},
+    {key:'updated',label:'최종 수정',sortable:true,render:v=><span style={{fontFamily:"'DM Mono',monospace",fontSize:12,color:'#94A3B8'}}>{v}</span>},
+    {key:'status',label:'상태',render:v=><StatusBadge status={v}/>},
+  ];
+  return (
+    <div style={appStyles.content} data-screen-label="reports">
+      <Header title="보고서" subtitle="Reports" actions={[{label:'+ 새 보고서',primary:true}]} />
+      <div style={appStyles.scrollArea}>
+        <div style={{ padding: '24px' }}>
+          <DataTable columns={cols} rows={rows} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Screen: Notifications ──────────────────────────────
+function NotificationsScreen() {
+  const [items, setItems] = React.useState(NOTIFICATIONS);
+  return (
+    <div style={appStyles.content} data-screen-label="notifications">
+      <Header title="알림" subtitle="Notifications" actions={[{label:'모두 읽음',primary:false}]} />
+      <div style={appStyles.scrollArea}>
+        <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {items.map(item => (
+            <NotifItem key={item.id} item={item} onRead={() => setItems(prev => prev.map(n => n.id === item.id ? {...n,unread:false} : n))} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function NotifItem({ item, onRead }) {
+  const [hover, setHover] = React.useState(false);
+  return (
+    <div
+      onClick={onRead}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{
+        display: 'flex', alignItems: 'flex-start', gap: 14, padding: '14px 16px', borderRadius: 10,
+        background: item.unread ? 'rgba(99,102,241,0.06)' : hover ? 'rgba(255,255,255,0.03)' : 'transparent',
+        border: item.unread ? '1px solid rgba(99,102,241,0.12)' : '1px solid transparent',
+        cursor: 'pointer', transition: 'all 150ms', marginBottom: 4,
+      }}
+    >
+      <div style={{
+        width: 36, height: 36, borderRadius: 9, flexShrink: 0,
+        background: `${item.iconColor}1a`, display: 'flex', alignItems: 'center',
+        justifyContent: 'center', fontSize: 16, color: item.iconColor,
+      }}>{item.icon}</div>
+      <div style={{ flex: 1 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
+          <span style={{ fontSize: 13, fontWeight: item.unread ? 600 : 500, color: '#F1F5F9' }}>{item.title}</span>
+          {item.unread && <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#6366F1', flexShrink: 0 }} />}
+        </div>
+        <div style={{ fontSize: 13, color: '#94A3B8', lineHeight: 1.4 }}>{item.desc}</div>
+      </div>
+      <div style={{ fontSize: 11, color: '#475569', whiteSpace: 'nowrap', paddingTop: 2 }}>{item.time}</div>
+    </div>
+  );
+}
+
+// ─── Screen: Settings ──────────────────────────────────────
+function SettingsScreen() {
+  const [name, setName] = React.useState('김민준');
+  const [email, setEmail] = React.useState('minjun@404dash.io');
+  const [notifEmail, setNotifEmail] = React.useState(true);
+  const [notifSlack, setNotifSlack] = React.useState(false);
+  const [darkMode, setDarkMode] = React.useState(true);
+
+  return (
+    <div style={appStyles.content} data-screen-label="settings">
+      <Header title="설정" subtitle="Settings" actions={[{label:'저장',primary:true}]} />
+      <div style={appStyles.scrollArea}>
+        <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 560 }}>
+          <SettingsSection title="프로필" subtitle="Profile information">
+            <SettingsField label="이름" value={name} onChange={setName} />
+            <SettingsField label="이메일" value={email} onChange={setEmail} type="email" />
+          </SettingsSection>
+          <SettingsSection title="알림" subtitle="Notification preferences">
+            <SettingsToggle label="이메일 알림" desc="중요 이벤트를 이메일로 받습니다" value={notifEmail} onChange={setNotifEmail} />
+            <SettingsToggle label="Slack 알림" desc="Slack 워크스페이스로 알림을 전송합니다" value={notifSlack} onChange={setNotifSlack} />
+          </SettingsSection>
+          <SettingsSection title="화면" subtitle="Display preferences">
+            <SettingsToggle label="다크 모드" desc="어두운 테마를 사용합니다" value={darkMode} onChange={setDarkMode} />
+          </SettingsSection>
+          <SettingsSection title="위험 구역" subtitle="Danger zone">
+            <button style={{ padding: '8px 16px', borderRadius: 6, background: 'rgba(239,68,68,0.1)', color: '#EF4444', border: '1px solid rgba(239,68,68,0.2)', fontSize: 13, fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}>
+              계정 삭제
+            </button>
+          </SettingsSection>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SettingsSection({ title, subtitle, children }) {
+  return (
+    <div style={{ background: '#1A1D27', border: '1px solid #2A2D3E', borderRadius: 12, overflow: 'hidden' }}>
+      <div style={{ padding: '16px 20px', borderBottom: '1px solid #2A2D3E' }}>
+        <div style={{ fontSize: 14, fontWeight: 600, color: '#F1F5F9' }}>{title}</div>
+        <div style={{ fontSize: 12, color: '#475569', marginTop: 2 }}>{subtitle}</div>
+      </div>
+      <div style={{ padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 16 }}>{children}</div>
+    </div>
+  );
+}
+
+function SettingsField({ label, value, onChange, type = 'text' }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+      <label style={{ fontSize: 12, fontWeight: 500, color: '#94A3B8' }}>{label}</label>
+      <input type={type} value={value} onChange={e => onChange(e.target.value)}
+        style={{ background: '#0F1117', border: '1px solid #2A2D3E', color: '#F1F5F9', padding: '8px 12px', borderRadius: 6, fontSize: 14, outline: 'none' }} />
+    </div>
+  );
+}
+
+function SettingsToggle({ label, desc, value, onChange }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+      <div>
+        <div style={{ fontSize: 13, fontWeight: 500, color: '#F1F5F9' }}>{label}</div>
+        <div style={{ fontSize: 12, color: '#475569', marginTop: 2 }}>{desc}</div>
+      </div>
+      <div onClick={() => onChange(!value)} style={{
+        width: 40, height: 22, borderRadius: 11, cursor: 'pointer', transition: 'background 200ms',
+        background: value ? '#6366F1' : '#2A2D3E', position: 'relative', flexShrink: 0,
+      }}>
+        <div style={{
+          width: 16, height: 16, borderRadius: '50%', background: 'white',
+          position: 'absolute', top: 3, left: value ? 21 : 3, transition: 'left 200ms',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
+        }} />
+      </div>
+    </div>
+  );
+}
+
+// ─── Shared styles ──────────────────────────────────────────
+const appStyles = {
+  content: { flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' },
+  scrollArea: { flex: 1, overflowY: 'auto', overflowX: 'hidden' },
+  kpiGrid: {
+    display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
+    gap: 16, padding: '20px 24px',
+  },
+  chartGrid: {
+    display: 'grid', gridTemplateColumns: '1fr 1fr',
+    gap: 16, padding: '0 24px 24px',
+  },
+  chartCard: {
+    background: '#1A1D27', border: '1px solid #2A2D3E', borderRadius: 12,
+    padding: '18px 20px', boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
+  },
+  chartHeader: { display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 14 },
+  chartTitle: { fontSize: 14, fontWeight: 600, color: '#F1F5F9' },
+  chartSub: { fontSize: 11, color: '#475569', marginTop: 2 },
+  chartBadge: {
+    fontSize: 11, padding: '2px 8px', borderRadius: 4, background: '#22263A',
+    color: '#94A3B8', border: '1px solid #2A2D3E',
+  },
+  section: { padding: '0 24px 24px' },
+  sectionHeader: { marginBottom: 12 },
+};
+
+// ─── App ────────────────────────────────────────────────────
+function App() {
+  const [screen, setScreen] = React.useState('overview');
+
+  const screens = {
+    overview: <OverviewScreen />,
+    analytics: <AnalyticsScreen />,
+    reports: <ReportsScreen />,
+    notifications: <NotificationsScreen />,
+    settings: <SettingsScreen />,
+  };
+
+  return (
+    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
+      <Sidebar active={screen} onNav={setScreen} />
+      {screens[screen] || screens.overview}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

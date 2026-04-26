@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { background: #1a1d27; padding: 16px; font-family: var(--font-sans); }
+.grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.swatch { border-radius: 8px; overflow: hidden; }
+.color-block { height: 44px; }
+.label { padding: 6px 8px; }
+.name { font-size: 11px; font-weight: 500; color: #F1F5F9; }
+.hex  { font-size: 10px; color: #94A3B8; font-family: var(--font-mono); }
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="swatch"><div class="color-block" style="background:#0F1117;border:1px solid #2A2D3E"></div><div class="label"><div class="name">bg</div><div class="hex">#0F1117</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#1A1D27"></div><div class="label"><div class="name">surface-1</div><div class="hex">#1A1D27</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#22263A"></div><div class="label"><div class="name">surface-2</div><div class="hex">#22263A</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#2A2E42"></div><div class="label"><div class="name">surface-3</div><div class="hex">#2A2E42</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#2A2D3E"></div><div class="label"><div class="name">border</div><div class="hex">#2A2D3E</div></div></div>
+</div>
+</body>
+</html>

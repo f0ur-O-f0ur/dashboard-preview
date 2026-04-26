@@ -1,0 +1,171 @@
+/* ============================================================
+   404dash Design System — Colors & Typography Tokens
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ── Base Colors ───────────────────────────────────────── */
+  --color-bg:           #0F1117;
+  --color-surface-1:    #1A1D27;
+  --color-surface-2:    #22263A;
+  --color-surface-3:    #2A2E42;
+  --color-border:       #2A2D3E;
+  --color-border-strong:#3A3F58;
+
+  /* ── Accent: Indigo ────────────────────────────────────── */
+  --color-accent:       #6366F1;
+  --color-accent-hover: #818CF8;
+  --color-accent-dim:   rgba(99, 102, 241, 0.15);
+  --color-accent-subtle:rgba(99, 102, 241, 0.08);
+
+  /* ── Semantic ──────────────────────────────────────────── */
+  --color-success:      #10B981;
+  --color-success-dim:  rgba(16, 185, 129, 0.12);
+  --color-warning:      #F59E0B;
+  --color-warning-dim:  rgba(245, 158, 11, 0.12);
+  --color-danger:       #EF4444;
+  --color-danger-dim:   rgba(239, 68, 68, 0.12);
+  --color-info:         #38BDF8;
+  --color-info-dim:     rgba(56, 189, 248, 0.12);
+
+  /* ── Text ──────────────────────────────────────────────── */
+  --color-text-primary:   #F1F5F9;
+  --color-text-secondary: #94A3B8;
+  --color-text-muted:     #475569;
+  --color-text-accent:    #818CF8;
+  --color-text-inverse:   #0F1117;
+
+  /* ── Chart Palette ─────────────────────────────────────── */
+  --color-chart-1: #6366F1;
+  --color-chart-2: #10B981;
+  --color-chart-3: #F59E0B;
+  --color-chart-4: #38BDF8;
+  --color-chart-5: #F472B6;
+  --color-chart-6: #A78BFA;
+
+  /* ── Shadows ───────────────────────────────────────────── */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
+  --shadow-focus: 0 0 0 2px #6366F1, 0 0 0 4px rgba(99, 102, 241, 0.2);
+
+  /* ── Radii ─────────────────────────────────────────────── */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* ── Spacing ───────────────────────────────────────────── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* ── Layout ────────────────────────────────────────────── */
+  --sidebar-width: 220px;
+  --header-height: 56px;
+  --card-padding: var(--space-5);
+  --layout-gutter: var(--space-6);
+
+  /* ── Typography: Fonts ─────────────────────────────────── */
+  --font-sans:  'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-mono:  'DM Mono', 'Fira Code', monospace;
+
+  /* ── Typography: Scale ─────────────────────────────────── */
+  --text-xs:   11px;
+  --text-sm:   13px;
+  --text-base: 14px;
+  --text-md:   15px;
+  --text-lg:   17px;
+  --text-xl:   20px;
+  --text-2xl:  24px;
+  --text-3xl:  30px;
+  --text-4xl:  38px;
+
+  /* ── Typography: Weight ────────────────────────────────── */
+  --weight-regular: 400;
+  --weight-medium:  500;
+  --weight-semibold:600;
+  --weight-bold:    700;
+
+  /* ── Typography: Line height ───────────────────────────── */
+  --leading-tight:  1.2;
+  --leading-snug:   1.35;
+  --leading-normal: 1.5;
+  --leading-relaxed:1.65;
+
+  /* ── Animation ─────────────────────────────────────────── */
+  --ease-spring:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth:  cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast:     150ms;
+  --dur-normal:   250ms;
+  --dur-slow:     400ms;
+}
+
+/* ── Semantic Aliases ────────────────────────────────────── */
+:root {
+  /* Heading scale */
+  --h1-size:   var(--text-3xl);
+  --h1-weight: var(--weight-bold);
+  --h1-leading:var(--leading-tight);
+
+  --h2-size:   var(--text-2xl);
+  --h2-weight: var(--weight-semibold);
+  --h2-leading:var(--leading-tight);
+
+  --h3-size:   var(--text-xl);
+  --h3-weight: var(--weight-semibold);
+  --h3-leading:var(--leading-snug);
+
+  --h4-size:   var(--text-lg);
+  --h4-weight: var(--weight-medium);
+  --h4-leading:var(--leading-snug);
+
+  /* Body scale */
+  --body-size:   var(--text-base);
+  --body-weight: var(--weight-regular);
+  --body-leading:var(--leading-normal);
+
+  --body-sm-size:   var(--text-sm);
+  --body-sm-leading:var(--leading-normal);
+
+  /* Label / UI */
+  --label-size:   var(--text-sm);
+  --label-weight: var(--weight-medium);
+
+  --caption-size:   var(--text-xs);
+  --caption-weight: var(--weight-regular);
+
+  /* Code */
+  --code-size:   var(--text-sm);
+  --code-family: var(--font-mono);
+}
+
+/* ── Base Reset ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--body-size);
+  font-weight: var(--body-weight);
+  line-height: var(--body-leading);
+  color: var(--color-text-primary);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 { font-size: var(--h1-size); font-weight: var(--h1-weight); line-height: var(--h1-leading); }
+h2 { font-size: var(--h2-size); font-weight: var(--h2-weight); line-height: var(--h2-leading); }
+h3 { font-size: var(--h3-size); font-weight: var(--h3-weight); line-height: var(--h3-leading); }
+h4 { font-size: var(--h4-size); font-weight: var(--h4-weight); line-height: var(--h4-leading); }
+p  { font-size: var(--body-size); line-height: var(--body-leading); color: var(--color-text-secondary); }
+
+code, pre { font-family: var(--font-mono); font-size: var(--code-size); }

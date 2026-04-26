@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { background: #1a1d27; padding: 20px; font-family: var(--font-sans); }
+.row { display: flex; gap: 8px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+.label { font-size: 10px; color: #475569; font-family: monospace; min-width: 60px; }
+.badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 9999px; font-size: 11px; font-weight: 500; }
+.dot { width: 6px; height: 6px; border-radius: 50%; }
+.tag { display: inline-flex; align-items: center; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 500; border: 1px solid; }
+</style>
+</head>
+<body>
+<div class="row"><span class="label">Status</span>
+  <span class="badge" style="background:rgba(16,185,129,0.12);color:#10B981"><div class="dot" style="background:#10B981"></div>활성</span>
+  <span class="badge" style="background:rgba(245,158,11,0.12);color:#F59E0B"><div class="dot" style="background:#F59E0B"></div>대기중</span>
+  <span class="badge" style="background:rgba(239,68,68,0.12);color:#EF4444"><div class="dot" style="background:#EF4444"></div>오류</span>
+  <span class="badge" style="background:rgba(148,163,184,0.1);color:#94A3B8"><div class="dot" style="background:#94A3B8"></div>비활성</span>
+</div>
+<div class="row"><span class="label">Tags</span>
+  <span class="tag" style="background:rgba(99,102,241,0.1);color:#818CF8;border-color:rgba(99,102,241,0.2)">analytics</span>
+  <span class="tag" style="background:rgba(56,189,248,0.1);color:#38BDF8;border-color:rgba(56,189,248,0.2)">real-time</span>
+  <span class="tag" style="background:rgba(167,139,250,0.1);color:#A78BFA;border-color:rgba(167,139,250,0.2)">beta</span>
+</div>
+<div class="row"><span class="label">Counts</span>
+  <span class="badge" style="background:#22263A;color:#F1F5F9">12</span>
+  <span class="badge" style="background:#6366F1;color:white">99+</span>
+  <span class="badge" style="background:rgba(239,68,68,0.12);color:#EF4444">3</span>
+</div>
+</body>
+</html>

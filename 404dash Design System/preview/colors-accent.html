@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { background: #1a1d27; padding: 16px; font-family: var(--font-sans); }
+.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.swatch { border-radius: 8px; overflow: hidden; }
+.color-block { height: 52px; display: flex; align-items: center; justify-content: center; }
+.label { padding: 6px 8px; }
+.name { font-size: 11px; font-weight: 500; color: #F1F5F9; }
+.hex  { font-size: 10px; color: #94A3B8; font-family: monospace; }
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="swatch"><div class="color-block" style="background:#6366F1"><span style="color:white;font-size:11px;font-weight:600">accent</span></div><div class="label"><div class="name">Indigo</div><div class="hex">#6366F1</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:#818CF8"><span style="color:white;font-size:11px;font-weight:600">hover</span></div><div class="label"><div class="name">Indigo Hover</div><div class="hex">#818CF8</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:rgba(99,102,241,0.15);border:1px solid #2A2D3E"></div><div class="label"><div class="name">accent-dim</div><div class="hex">rgba(99,102,241,0.15)</div></div></div>
+  <div class="swatch"><div class="color-block" style="background:rgba(99,102,241,0.08);border:1px solid #2A2D3E"></div><div class="label"><div class="name">accent-subtle</div><div class="hex">rgba(99,102,241,0.08)</div></div></div>
+</div>
+</body>
+</html>

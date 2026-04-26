@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { background: #0F1117; padding: 24px; font-family: var(--font-sans); display: flex; flex-direction: column; gap: 24px; }
+.row { display: flex; align-items: center; gap: 24px; }
+.bg { padding: 16px 24px; border-radius: 10px; display: flex; align-items: center; gap: 12px; }
+.mark { display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; font-size: 14px; border-radius: 7px; background: #6366F1; }
+.wordmark { font-weight: 600; }
+.label { font-size: 10px; color: #475569; font-family: monospace; margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="row">
+  <div>
+    <div class="bg" style="background:#1A1D27;border:1px solid #2A2D3E">
+      <div class="mark" style="width:32px;height:32px">404</div>
+      <div class="wordmark" style="font-size:18px;color:#F1F5F9">dash</div>
+    </div>
+    <div class="label">Dark bg</div>
+  </div>
+  <div>
+    <div class="bg" style="background:#6366F1">
+      <div class="mark" style="width:32px;height:32px;background:rgba(255,255,255,0.2)">404</div>
+      <div class="wordmark" style="font-size:18px;color:white">dash</div>
+    </div>
+    <div class="label">Accent bg</div>
+  </div>
+  <div>
+    <div style="display:flex;align-items:center;gap:8px;padding:16px 20px;background:#F1F5F9;border-radius:10px">
+      <div class="mark" style="width:32px;height:32px">404</div>
+      <div class="wordmark" style="font-size:18px;color:#0F1117">dash</div>
+    </div>
+    <div class="label">Light bg</div>
+  </div>
+</div>
+<div class="row">
+  <div>
+    <div class="mark" style="width:40px;height:40px;font-size:12px">404</div>
+    <div class="label">Icon only</div>
+  </div>
+  <div>
+    <div class="mark" style="width:28px;height:28px;font-size:10px;border-radius:5px">404</div>
+    <div class="label">Small</div>
+  </div>
+</div>
+</body>
+</html>

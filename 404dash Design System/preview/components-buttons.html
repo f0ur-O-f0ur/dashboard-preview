@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { background: #1a1d27; padding: 20px; font-family: var(--font-sans); }
+.row { display: flex; gap: 10px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+.label { font-size: 10px; color: #475569; min-width: 60px; font-family: monospace; }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; font-family: inherit; transition: all 150ms; }
+.btn-primary { background: #6366F1; color: white; }
+.btn-secondary { background: #22263A; color: #F1F5F9; border: 1px solid #2A2D3E; }
+.btn-ghost { background: transparent; color: #94A3B8; border: 1px solid transparent; }
+.btn-danger { background: rgba(239,68,68,0.12); color: #EF4444; border: 1px solid rgba(239,68,68,0.2); }
+.btn-sm { padding: 5px 10px; font-size: 12px; }
+.btn-lg { padding: 10px 20px; font-size: 15px; }
+.btn-icon { padding: 7px; border-radius: 6px; background: #22263A; border: 1px solid #2A2D3E; color: #94A3B8; display: inline-flex; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.7; }
+</style>
+</head>
+<body>
+<div class="row"><span class="label">Primary</span>
+  <button class="btn btn-primary">새 보고서</button>
+  <button class="btn btn-primary btn-sm">내보내기</button>
+  <button class="btn btn-primary btn-lg">시작하기</button>
+</div>
+<div class="row"><span class="label">Secondary</span>
+  <button class="btn btn-secondary">필터</button>
+  <button class="btn btn-secondary">기간 설정</button>
+</div>
+<div class="row"><span class="label">Ghost</span>
+  <button class="btn btn-ghost">취소</button>
+  <button class="btn btn-ghost">자세히 보기</button>
+</div>
+<div class="row"><span class="label">Danger</span>
+  <button class="btn btn-danger">삭제</button>
+</div>
+<div class="row"><span class="label">Disabled</span>
+  <button class="btn btn-primary" style="opacity:0.4;cursor:not-allowed">비활성화</button>
+  <button class="btn btn-secondary" style="opacity:0.4;cursor:not-allowed">비활성화</button>
+</div>
+</body>
+</html>

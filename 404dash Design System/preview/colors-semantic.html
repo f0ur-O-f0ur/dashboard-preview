@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { background: #1a1d27; padding: 16px; font-family: var(--font-sans); }
+.row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; }
+.dot { width: 8px; height: 8px; border-radius: 50%; }
+.label { font-size: 10px; color: #94A3B8; font-family: monospace; margin-left: 4px; }
+</style>
+</head>
+<body>
+<div class="row">
+  <div class="badge" style="background:rgba(16,185,129,0.12);color:#10B981"><div class="dot" style="background:#10B981"></div>Success</div>
+  <span class="label">#10B981</span>
+</div>
+<div class="row">
+  <div class="badge" style="background:rgba(245,158,11,0.12);color:#F59E0B"><div class="dot" style="background:#F59E0B"></div>Warning</div>
+  <span class="label">#F59E0B</span>
+</div>
+<div class="row">
+  <div class="badge" style="background:rgba(239,68,68,0.12);color:#EF4444"><div class="dot" style="background:#EF4444"></div>Danger</div>
+  <span class="label">#EF4444</span>
+</div>
+<div class="row">
+  <div class="badge" style="background:rgba(56,189,248,0.12);color:#38BDF8"><div class="dot" style="background:#38BDF8"></div>Info</div>
+  <span class="label">#38BDF8</span>
+</div>
+</body>
+</html>

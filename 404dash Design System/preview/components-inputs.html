@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+body { background: #1a1d27; padding: 20px; font-family: var(--font-sans); }
+.row { margin-bottom: 12px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.label { font-size: 10px; color: #475569; font-family: monospace; min-width: 60px; }
+input, select { background: #0F1117; border: 1px solid #2A2D3E; color: #F1F5F9; padding: 7px 12px; border-radius: 6px; font-size: 13px; font-family: inherit; outline: none; width: 200px; }
+input::placeholder { color: #475569; }
+input:focus { border-color: #6366F1; box-shadow: 0 0 0 2px #6366F1, 0 0 0 4px rgba(99,102,241,0.2); }
+.input-wrap { position: relative; display: inline-block; }
+.input-wrap input { padding-left: 32px; }
+.input-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #475569; font-size: 13px; }
+.input-error { border-color: #EF4444 !important; }
+.error-msg { font-size: 11px; color: #EF4444; margin-top: 3px; }
+</style>
+</head>
+<body>
+<div class="row"><span class="label">Default</span><input type="text" placeholder="검색..."></div>
+<div class="row"><span class="label">Search</span>
+  <div class="input-wrap"><span class="input-icon">⌕</span><input type="text" placeholder="메트릭 검색"></div>
+</div>
+<div class="row"><span class="label">Focus</span><input type="text" placeholder="포커스 상태" style="border-color:#6366F1;box-shadow:0 0 0 2px #6366F1,0 0 0 4px rgba(99,102,241,0.2)"></div>
+<div class="row"><span class="label">Error</span>
+  <div>
+    <input type="text" value="잘못된 값" class="input-error">
+    <div class="error-msg">유효하지 않은 입력입니다.</div>
+  </div>
+</div>
+<div class="row"><span class="label">Select</span>
+  <select><option>지난 7일</option><option>지난 30일</option><option>지난 90일</option></select>
+</div>
+</body>
+</html>
