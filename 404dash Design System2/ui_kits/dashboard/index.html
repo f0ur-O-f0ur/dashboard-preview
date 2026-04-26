@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pulse — Dashboard UI Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ─── Reset ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: #FAFAF8; color: #1A1A1A; -webkit-font-smoothing: antialiased; overflow: hidden; height: 100vh; display: flex; }
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #D5CFC8; border-radius: 3px; }
+
+/* ─── Layout ─── */
+.layout { display: flex; width: 100vw; height: 100vh; overflow: hidden; }
+
+/* ─── Sidebar ─── */
+.sidebar { width: 220px; min-width: 220px; background: #1C1C1E; display: flex; flex-direction: column; height: 100vh; overflow: hidden; transition: width 300ms cubic-bezier(0.16,1,0.3,1), min-width 300ms cubic-bezier(0.16,1,0.3,1); position: relative; z-index: 10; }
+.sidebar.collapsed { width: 64px; min-width: 64px; }
+.sidebar-header { padding: 20px 16px 12px; border-bottom: 1px solid #2E2E31; flex-shrink: 0; }
+.logo { display: flex; align-items: center; gap: 10px; overflow: hidden; }
+.logo-mark { width: 28px; height: 28px; background: #FF6B35; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.logo-text { font-size: 16px; font-weight: 700; color: #E5E5EA; letter-spacing: -0.02em; white-space: nowrap; transition: opacity 250ms, transform 250ms; }
+.sidebar.collapsed .logo-text { opacity: 0; transform: translateX(-8px); pointer-events: none; }
+.sidebar-nav { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 10px 8px; display: flex; flex-direction: column; gap: 1px; }
+.nav-section { margin-top: 8px; }
+.nav-section-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #48484C; padding: 6px 10px 4px; white-space: nowrap; overflow: hidden; transition: opacity 200ms; }
+.sidebar.collapsed .nav-section-label { opacity: 0; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 8px; cursor: pointer; color: #98989F; font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; transition: background 150ms, color 150ms; position: relative; }
+.nav-item:hover { background: #252527; color: #C7C7CC; }
+.nav-item.active { background: rgba(255,107,53,0.12); color: #FF6B35; }
+.nav-item svg { flex-shrink: 0; width: 18px; height: 18px; }
+.nav-label { transition: opacity 250ms, transform 250ms; }
+.sidebar.collapsed .nav-label { opacity: 0; transform: translateX(-6px); pointer-events: none; }
+.nav-badge { margin-left: auto; background: #FF6B35; color: white; font-size: 10px; font-weight: 700; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; display: flex; align-items: center; justify-content: center; transition: opacity 200ms; }
+.sidebar.collapsed .nav-badge { opacity: 0; }
+.sidebar-footer { padding: 12px 8px; border-top: 1px solid #2E2E31; display: flex; flex-direction: column; gap: 1px; flex-shrink: 0; }
+.sidebar-toggle { position: absolute; right: -12px; top: 28px; width: 24px; height: 24px; background: #2E2E31; border: 1px solid #3A3A3D; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #98989F; transition: background 150ms, color 150ms; z-index: 20; }
+.sidebar-toggle:hover { background: #3A3A3D; color: #C7C7CC; }
+
+/* ─── Main ─── */
+.main { flex: 1; display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
+
+/* ─── Topbar ─── */
+.topbar { height: 56px; background: #fff; border-bottom: 1px solid #E8E4DF; display: flex; align-items: center; padding: 0 24px; gap: 16px; flex-shrink: 0; }
+.topbar-title { font-size: 16px; font-weight: 600; color: #1A1A1A; flex: 1; }
+.topbar-controls { display: flex; align-items: center; gap: 8px; }
+.date-picker { display: flex; align-items: center; gap: 6px; background: #FAFAF8; border: 1px solid #E8E4DF; border-radius: 8px; padding: 7px 12px; font-size: 13px; font-weight: 500; color: #4A4440; cursor: pointer; transition: border-color 150ms; }
+.date-picker:hover { border-color: #D5CFC8; }
+.btn { display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 7px 14px; border-radius: 8px; border: none; cursor: pointer; transition: all 150ms cubic-bezier(0.16,1,0.3,1); }
+.btn-primary { background: #FF6B35; color: white; }
+.btn-primary:hover { background: #E85520; box-shadow: 0 4px 12px rgba(255,107,53,0.3); transform: translateY(-1px); }
+.btn-outline { background: white; color: #4A4440; border: 1px solid #E8E4DF; }
+.btn-outline:hover { background: #F4F1EC; border-color: #D5CFC8; }
+.avatar { width: 32px; height: 32px; background: #FF6B35; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: 700; cursor: pointer; flex-shrink: 0; }
+.icon-btn { width: 34px; height: 34px; background: transparent; border: 1px solid #E8E4DF; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #928A80; transition: all 150ms; }
+.icon-btn:hover { background: #F4F1EC; color: #4A4440; }
+.notif-dot { position: relative; }
+.notif-dot::after { content: ''; position: absolute; top: 4px; right: 4px; width: 7px; height: 7px; background: #FF6B35; border-radius: 50%; border: 1.5px solid white; }
+
+/* ─── Content ─── */
+.content { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 24px; }
+
+/* ─── Page Views ─── */
+.page { display: none; }
+.page.active { display: block; animation: fadeUp 350ms cubic-bezier(0.16,1,0.3,1) both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ─── Stats Grid ─── */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.stat-card { background: white; border: 1px solid #E8E4DF; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: transform 250ms cubic-bezier(0.16,1,0.3,1), box-shadow 250ms; cursor: default; }
+.stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.07), 0 12px 24px rgba(0,0,0,0.06); }
+.stat-card.accent { background: #FF6B35; border-color: transparent; }
+.stat-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: #928A80; margin-bottom: 10px; }
+.stat-card.accent .stat-label { color: rgba(255,255,255,0.65); }
+.stat-value { font-family: 'DM Mono', monospace; font-size: 32px; font-weight: 500; letter-spacing: -0.025em; color: #1A1A1A; line-height: 1; margin-bottom: 10px; }
+.stat-card.accent .stat-value { color: white; }
+.stat-delta { display: inline-flex; align-items: center; gap: 3px; font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: 6px; }
+.delta-pos { background: #F0FDF4; color: #15803D; }
+.delta-neg { background: #FEF2F2; color: #DC2626; }
+.stat-card.accent .stat-delta { background: rgba(255,255,255,0.2); color: white; }
+.stat-sub { font-size: 11px; color: #928A80; margin-top: 4px; }
+.stat-card.accent .stat-sub { color: rgba(255,255,255,0.55); }
+.sparkline-wrap { margin-top: 14px; }
+
+/* ─── Chart Card ─── */
+.chart-card { background: white; border: 1px solid #E8E4DF; border-radius: 12px; padding: 20px 20px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 20px; }
+.chart-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+.chart-title { font-size: 14px; font-weight: 600; color: #1A1A1A; }
+.chart-sub { font-size: 12px; color: #928A80; margin-bottom: 16px; }
+.chart-tabs { display: flex; gap: 2px; background: #F4F1EC; border-radius: 8px; padding: 3px; }
+.chart-tab { font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 6px; cursor: pointer; color: #928A80; transition: all 150ms; }
+.chart-tab.active { background: white; color: #1A1A1A; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+/* ─── Grid layouts ─── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+.grid-3-1 { display: grid; grid-template-columns: 3fr 1fr; gap: 16px; margin-bottom: 20px; }
+@media (max-width: 1100px) { .grid-2 { grid-template-columns: 1fr; } .grid-3-1 { grid-template-columns: 1fr; } }
+
+/* ─── Table ─── */
+.table-card { background: white; border: 1px solid #E8E4DF; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.table-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 12px; border-bottom: 1px solid #F4F1EC; }
+table { width: 100%; border-collapse: collapse; }
+thead th { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: #928A80; text-align: left; padding: 10px 20px; background: #FAFAF8; border-bottom: 1px solid #F4F1EC; }
+tbody tr { transition: background 120ms; }
+tbody tr:hover { background: #FAFAF8; }
+tbody td { padding: 12px 20px; font-size: 13px; color: #1A1A1A; border-bottom: 1px solid #F4F1EC; }
+tbody tr:last-child td { border-bottom: none; }
+.td-mono { font-family: 'DM Mono', monospace; }
+.td-muted { color: #928A80; }
+.status-dot { display: inline-flex; align-items: center; gap: 6px; }
+.dot { width: 7px; height: 7px; border-radius: 50%; }
+
+/* ─── Activity Feed ─── */
+.activity-card { background: white; border: 1px solid #E8E4DF; border-radius: 12px; padding: 16px 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.activity-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid #F4F1EC; align-items: flex-start; }
+.activity-item:last-child { border-bottom: none; }
+.activity-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.activity-text { flex: 1; }
+.activity-title { font-size: 13px; font-weight: 500; color: #1A1A1A; margin-bottom: 2px; }
+.activity-time { font-size: 11px; color: #928A80; }
+
+/* ─── Progress bars ─── */
+.progress-bar { height: 6px; background: #F4F1EC; border-radius: 9999px; overflow: hidden; margin-top: 6px; }
+.progress-fill { height: 100%; border-radius: 9999px; transition: width 600ms cubic-bezier(0.16,1,0.3,1); }
+
+/* ─── Empty / other pages ─── */
+.page-header { margin-bottom: 24px; }
+.page-header h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; color: #1A1A1A; }
+.page-header p { font-size: 14px; color: #928A80; margin-top: 4px; }
+
+/* ─── Animations for chart bars ─── */
+@keyframes barGrow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+.bar-animate { transform-origin: bottom; animation: barGrow 600ms cubic-bezier(0.16,1,0.3,1) both; }
+
+/* ─── Counter animation ─── */
+.counting { transition: none; }
+</style>
+</head>
+<body>
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-toggle" id="sidebarToggle" title="Toggle sidebar">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" id="toggleIcon"><path d="M15 18l-6-6 6-6"/></svg>
+    </div>
+    <div class="sidebar-header">
+      <div class="logo">
+        <div class="logo-mark">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <span class="logo-text">Pulse</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-item active" data-page="overview">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <span class="nav-label">Overview</span>
+      </div>
+      <div class="nav-item" data-page="analytics">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span class="nav-label">Analytics</span>
+        <span class="nav-badge">3</span>
+      </div>
+      <div class="nav-item" data-page="users">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span class="nav-label">Users</span>
+      </div>
+      <div class="nav-item" data-page="reports">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <span class="nav-label">Reports</span>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">System</div>
+        <div class="nav-item" data-page="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span class="nav-label">Settings</span>
+        </div>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span class="nav-label">Sign out</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main">
+    <!-- Topbar -->
+    <header class="topbar">
+      <span class="topbar-title" id="topbarTitle">Overview</span>
+      <div class="topbar-controls">
+        <div class="date-picker">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Jan 1 – Jan 31, 2025
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <button class="btn btn-outline">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          Export
+        </button>
+        <button class="btn btn-primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          New report
+        </button>
+        <div class="icon-btn notif-dot">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </div>
+        <div class="avatar">JK</div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- Overview Page -->
+      <div class="page active" id="page-overview">
+        <div class="page-header">
+          <h1>Good morning, Ji-hoon</h1>
+          <p>Here's what's happening across your workspace today.</p>
+        </div>
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Revenue</div>
+            <div class="stat-value" data-count="84200" data-prefix="$" data-suffix="K">$84.2K</div>
+            <span class="stat-delta delta-pos">↑ +12.4%</span>
+            <div class="stat-sub">vs. last month</div>
+            <div class="sparkline-wrap">
+              <svg width="100%" height="36" viewBox="0 0 160 36" preserveAspectRatio="none">
+                <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22C55E" stop-opacity="0.15"/><stop offset="100%" stop-color="#22C55E" stop-opacity="0"/></linearGradient></defs>
+                <path d="M0,28 C20,24 30,26 50,18 S80,12 100,10 S130,8 160,4" fill="none" stroke="#22C55E" stroke-width="1.5"/>
+                <path d="M0,28 C20,24 30,26 50,18 S80,12 100,10 S130,8 160,4 L160,36 L0,36 Z" fill="url(#g1)"/>
+              </svg>
+            </div>
+          </div>
+          <div class="stat-card accent">
+            <div class="stat-label">Conversion Rate</div>
+            <div class="stat-value">4.38%</div>
+            <span class="stat-delta">↑ +0.6pp</span>
+            <div class="stat-sub">30-day average</div>
+            <div class="sparkline-wrap">
+              <svg width="100%" height="36" viewBox="0 0 160 36" preserveAspectRatio="none">
+                <path d="M0,26 C30,22 50,20 80,14 S120,8 160,4" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+              </svg>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Active Users</div>
+            <div class="stat-value">12,847</div>
+            <span class="stat-delta delta-neg">↓ −3.1%</span>
+            <div class="stat-sub">daily average</div>
+            <div class="sparkline-wrap">
+              <svg width="100%" height="36" viewBox="0 0 160 36" preserveAspectRatio="none">
+                <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#EF4444" stop-opacity="0.12"/><stop offset="100%" stop-color="#EF4444" stop-opacity="0"/></linearGradient></defs>
+                <path d="M0,10 C20,14 40,12 60,18 S90,22 120,20 S145,22 160,28" fill="none" stroke="#EF4444" stroke-width="1.5"/>
+                <path d="M0,10 C20,14 40,12 60,18 S90,22 120,20 S145,22 160,28 L160,36 L0,36 Z" fill="url(#g2)"/>
+              </svg>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Avg Session</div>
+            <div class="stat-value">3m 42s</div>
+            <span class="stat-delta delta-pos">↑ +8s</span>
+            <div class="stat-sub">median duration</div>
+          </div>
+        </div>
+
+        <!-- Chart + Activity -->
+        <div class="grid-3-1">
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Revenue over time</div>
+                <div class="chart-sub">Daily revenue · January 2025</div>
+              </div>
+              <div class="chart-tabs">
+                <div class="chart-tab active">Daily</div>
+                <div class="chart-tab">Weekly</div>
+                <div class="chart-tab">Monthly</div>
+              </div>
+            </div>
+            <svg id="revenueChart" width="100%" height="200" viewBox="0 0 560 200" preserveAspectRatio="none" style="display:block;margin-top:8px;"></svg>
+          </div>
+
+          <div class="activity-card">
+            <div class="chart-title" style="margin-bottom:4px;">Recent activity</div>
+            <div class="chart-sub">Last 3 hours</div>
+            <div class="activity-item">
+              <div class="activity-icon" style="background:#FFF4EF;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              </div>
+              <div class="activity-text">
+                <div class="activity-title">New user signup</div>
+                <div class="activity-time">2 min ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon" style="background:#F0FDF4;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="activity-text">
+                <div class="activity-title">Report exported</div>
+                <div class="activity-time">14 min ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon" style="background:#FEF2F2;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              <div class="activity-text">
+                <div class="activity-title">Alert triggered</div>
+                <div class="activity-time">41 min ago</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon" style="background:#EFF6FF;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </div>
+              <div class="activity-text">
+                <div class="activity-title">Sync completed</div>
+                <div class="activity-time">1 hr ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-card">
+          <div class="table-header">
+            <div class="chart-title">Top sources</div>
+            <div style="display:flex;gap:8px;">
+              <div style="position:relative;display:inline-flex;align-items:center;">
+                <svg style="position:absolute;left:9px;color:#928A80;" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <input style="font-family:'DM Sans',sans-serif;font-size:13px;padding:6px 10px 6px 28px;border:1px solid #E8E4DF;border-radius:7px;background:#FAFAF8;color:#1A1A1A;outline:none;width:180px;" placeholder="Filter sources...">
+              </div>
+              <button class="btn btn-outline" style="font-size:12px;padding:6px 12px;">Export</button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Source</th>
+                <th>Sessions</th>
+                <th>Conversion</th>
+                <th>Revenue</th>
+                <th>Trend</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight:500;">Organic Search</td>
+                <td class="td-mono">28,420</td>
+                <td class="td-mono">5.2%</td>
+                <td class="td-mono">$31,840</td>
+                <td><span class="stat-delta delta-pos" style="font-size:11px;">↑ 14%</span></td>
+                <td><span class="status-dot"><span class="dot" style="background:#22C55E;"></span><span style="font-size:12px;color:#928A80;">Active</span></span></td>
+              </tr>
+              <tr>
+                <td style="font-weight:500;">Direct</td>
+                <td class="td-mono">14,831</td>
+                <td class="td-mono">4.8%</td>
+                <td class="td-mono">$18,204</td>
+                <td><span class="stat-delta delta-pos" style="font-size:11px;">↑ 8%</span></td>
+                <td><span class="status-dot"><span class="dot" style="background:#22C55E;"></span><span style="font-size:12px;color:#928A80;">Active</span></span></td>
+              </tr>
+              <tr>
+                <td style="font-weight:500;">Paid Social</td>
+                <td class="td-mono">9,204</td>
+                <td class="td-mono">3.1%</td>
+                <td class="td-mono">$11,550</td>
+                <td><span class="stat-delta delta-neg" style="font-size:11px;">↓ 3%</span></td>
+                <td><span class="status-dot"><span class="dot" style="background:#F5A623;"></span><span style="font-size:12px;color:#928A80;">Review</span></span></td>
+              </tr>
+              <tr>
+                <td style="font-weight:500;">Email</td>
+                <td class="td-mono">6,550</td>
+                <td class="td-mono">6.7%</td>
+                <td class="td-mono">$9,820</td>
+                <td><span class="stat-delta delta-pos" style="font-size:11px;">↑ 21%</span></td>
+                <td><span class="status-dot"><span class="dot" style="background:#22C55E;"></span><span style="font-size:12px;color:#928A80;">Active</span></span></td>
+              </tr>
+              <tr>
+                <td style="font-weight:500;">Referral</td>
+                <td class="td-mono">4,120</td>
+                <td class="td-mono">2.9%</td>
+                <td class="td-mono">$4,380</td>
+                <td><span class="stat-delta delta-neg" style="font-size:11px;">↓ 7%</span></td>
+                <td><span class="status-dot"><span class="dot" style="background:#EF4444;"></span><span style="font-size:12px;color:#928A80;">Paused</span></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Analytics Page -->
+      <div class="page" id="page-analytics">
+        <div class="page-header">
+          <h1>Analytics</h1>
+          <p>Deep-dive into your performance metrics.</p>
+        </div>
+        <div class="grid-2">
+          <div class="chart-card">
+            <div class="chart-title">Session funnel</div>
+            <div class="chart-sub">Jan 1 – Jan 31, 2025</div>
+            <div style="margin-top:8px;">
+              <div style="margin-bottom:12px;">
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="font-weight:500;">Landing page</span><span class="td-mono" style="font-size:12px;">100,000</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width:100%;background:#FF6B35;"></div></div>
+              </div>
+              <div style="margin-bottom:12px;">
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="font-weight:500;">Product page</span><span class="td-mono" style="font-size:12px;">64,200</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width:64.2%;background:#FF6B35;"></div></div>
+              </div>
+              <div style="margin-bottom:12px;">
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="font-weight:500;">Add to cart</span><span class="td-mono" style="font-size:12px;">22,810</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width:22.8%;background:#F5A623;"></div></div>
+              </div>
+              <div style="margin-bottom:12px;">
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="font-weight:500;">Checkout</span><span class="td-mono" style="font-size:12px;">9,480</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width:9.5%;background:#3B82F6;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="font-weight:500;">Purchase</span><span class="td-mono" style="font-size:12px;">4,380</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width:4.4%;background:#22C55E;"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">Traffic by device</div>
+            <div class="chart-sub">Breakdown this month</div>
+            <svg width="100%" height="160" viewBox="0 0 300 160" style="margin-top:8px;">
+              <!-- Donut chart -->
+              <circle cx="100" cy="80" r="55" fill="none" stroke="#F4F1EC" stroke-width="24"/>
+              <circle cx="100" cy="80" r="55" fill="none" stroke="#FF6B35" stroke-width="24" stroke-dasharray="207 139" stroke-dashoffset="0" transform="rotate(-90 100 80)"/>
+              <circle cx="100" cy="80" r="55" fill="none" stroke="#3B82F6" stroke-width="24" stroke-dasharray="95 251" stroke-dashoffset="-207" transform="rotate(-90 100 80)"/>
+              <circle cx="100" cy="80" r="55" fill="none" stroke="#E8E4DF" stroke-width="24" stroke-dasharray="44 302" stroke-dashoffset="-302" transform="rotate(-90 100 80)"/>
+              <text x="100" y="75" text-anchor="middle" font-family="DM Mono" font-size="20" font-weight="500" fill="#1A1A1A">59%</text>
+              <text x="100" y="92" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#928A80">Mobile</text>
+              <!-- Legend -->
+              <rect x="175" y="40" width="10" height="10" rx="2" fill="#FF6B35"/>
+              <text x="190" y="50" font-family="DM Sans" font-size="12" fill="#1A1A1A">Mobile</text>
+              <text x="260" y="50" font-family="DM Mono" font-size="12" fill="#928A80">59%</text>
+              <rect x="175" y="62" width="10" height="10" rx="2" fill="#3B82F6"/>
+              <text x="190" y="72" font-family="DM Sans" font-size="12" fill="#1A1A1A">Desktop</text>
+              <text x="260" y="72" font-family="DM Mono" font-size="12" fill="#928A80">27%</text>
+              <rect x="175" y="84" width="10" height="10" rx="2" fill="#E8E4DF"/>
+              <text x="190" y="94" font-family="DM Sans" font-size="12" fill="#1A1A1A">Tablet</text>
+              <text x="260" y="94" font-family="DM Mono" font-size="12" fill="#928A80">14%</text>
+            </svg>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Weekly active users</div>
+          <div class="chart-sub">Last 12 weeks</div>
+          <svg id="wauChart" width="100%" height="180" viewBox="0 0 600 180" preserveAspectRatio="none" style="display:block;margin-top:12px;"></svg>
+        </div>
+      </div>
+
+      <!-- Users Page -->
+      <div class="page" id="page-users">
+        <div class="page-header">
+          <h1>Users</h1>
+          <p>Manage and explore your user base.</p>
+        </div>
+        <div class="table-card">
+          <div class="table-header">
+            <div class="chart-title">All users <span style="font-weight:400;color:#928A80;font-size:13px;">· 12,847 total</span></div>
+            <div style="display:flex;gap:8px;">
+              <div style="position:relative;display:inline-flex;align-items:center;">
+                <svg style="position:absolute;left:9px;" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#928A80" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <input style="font-family:'DM Sans',sans-serif;font-size:13px;padding:6px 10px 6px 28px;border:1px solid #E8E4DF;border-radius:7px;background:#FAFAF8;color:#1A1A1A;outline:none;width:200px;" placeholder="Search users...">
+              </div>
+              <button class="btn btn-primary" style="font-size:13px;">Invite user</button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr><th>User</th><th>Plan</th><th>Last active</th><th>Sessions</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div style="display:flex;align-items:center;gap:10px;"><div style="width:30px;height:30px;border-radius:50%;background:#FF6B35;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:700;flex-shrink:0;">JK</div><div><div style="font-weight:500;font-size:13px;">Ji-hoon Kim</div><div style="font-size:12px;color:#928A80;">jihoon@company.io</div></div></div></td>
+                <td><span style="background:#FFF4EF;color:#E85520;font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;">Pro</span></td>
+                <td class="td-muted" style="font-size:12px;">Just now</td>
+                <td class="td-mono">284</td>
+                <td><span class="status-dot"><span class="dot" style="background:#22C55E;"></span><span style="font-size:12px;color:#928A80;">Online</span></span></td>
+              </tr>
+              <tr>
+                <td><div style="display:flex;align-items:center;gap:10px;"><div style="width:30px;height:30px;border-radius:50%;background:#3B82F6;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:700;flex-shrink:0;">SL</div><div><div style="font-weight:500;font-size:13px;">Sarah Lee</div><div style="font-size:12px;color:#928A80;">sarah@startup.dev</div></div></div></td>
+                <td><span style="background:#F4F1EC;color:#4A4440;font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;">Free</span></td>
+                <td class="td-muted" style="font-size:12px;">2 hrs ago</td>
+                <td class="td-mono">47</td>
+                <td><span class="status-dot"><span class="dot" style="background:#928A80;"></span><span style="font-size:12px;color:#928A80;">Away</span></span></td>
+              </tr>
+              <tr>
+                <td><div style="display:flex;align-items:center;gap:10px;"><div style="width:30px;height:30px;border-radius:50%;background:#22C55E;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:700;flex-shrink:0;">MP</div><div><div style="font-weight:500;font-size:13px;">Marcus Park</div><div style="font-size:12px;color:#928A80;">marcus@agency.co</div></div></div></td>
+                <td><span style="background:#FFF4EF;color:#E85520;font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;">Pro</span></td>
+                <td class="td-muted" style="font-size:12px;">Yesterday</td>
+                <td class="td-mono">128</td>
+                <td><span class="status-dot"><span class="dot" style="background:#928A80;"></span><span style="font-size:12px;color:#928A80;">Away</span></span></td>
+              </tr>
+              <tr>
+                <td><div style="display:flex;align-items:center;gap:10px;"><div style="width:30px;height:30px;border-radius:50%;background:#F5A623;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:700;flex-shrink:0;">AH</div><div><div style="font-weight:500;font-size:13px;">Aisha Hassan</div><div style="font-size:12px;color:#928A80;">aisha@corp.net</div></div></div></td>
+                <td><span style="background:#1C1C1E;color:#C7C7CC;font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;">Enterprise</span></td>
+                <td class="td-muted" style="font-size:12px;">3 days ago</td>
+                <td class="td-mono">912</td>
+                <td><span class="status-dot"><span class="dot" style="background:#EF4444;"></span><span style="font-size:12px;color:#928A80;">Inactive</span></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Reports Page -->
+      <div class="page" id="page-reports">
+        <div class="page-header">
+          <h1>Reports</h1>
+          <p>Scheduled and ad-hoc reports for your team.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;">
+          <div class="stat-card" style="cursor:pointer;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+              <div style="width:36px;height:36px;background:#FFF4EF;border-radius:9px;display:flex;align-items:center;justify-content:center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </div>
+              <span style="background:#F0FDF4;color:#15803D;font-size:10px;font-weight:600;padding:3px 7px;border-radius:5px;">Weekly</span>
+            </div>
+            <div style="font-size:14px;font-weight:600;margin-bottom:4px;">Revenue Summary</div>
+            <div style="font-size:12px;color:#928A80;">Last generated Jan 28</div>
+          </div>
+          <div class="stat-card" style="cursor:pointer;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+              <div style="width:36px;height:36px;background:#EFF6FF;border-radius:9px;display:flex;align-items:center;justify-content:center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              </div>
+              <span style="background:#EFF6FF;color:#2563EB;font-size:10px;font-weight:600;padding:3px 7px;border-radius:5px;">Monthly</span>
+            </div>
+            <div style="font-size:14px;font-weight:600;margin-bottom:4px;">User Cohort Analysis</div>
+            <div style="font-size:12px;color:#928A80;">Last generated Jan 1</div>
+          </div>
+          <div class="stat-card" style="cursor:pointer;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+              <div style="width:36px;height:36px;background:#FFFBEB;border-radius:9px;display:flex;align-items:center;justify-content:center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F5A623" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <span style="background:#FEF2F2;color:#DC2626;font-size:10px;font-weight:600;padding:3px 7px;border-radius:5px;">3 alerts</span>
+            </div>
+            <div style="font-size:14px;font-weight:600;margin-bottom:4px;">Funnel Drop-off</div>
+            <div style="font-size:12px;color:#928A80;">Last generated Jan 25</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings Page -->
+      <div class="page" id="page-settings">
+        <div class="page-header">
+          <h1>Settings</h1>
+          <p>Manage your workspace preferences.</p>
+        </div>
+        <div style="max-width:560px;display:flex;flex-direction:column;gap:16px;">
+          <div class="chart-card">
+            <div class="chart-title" style="margin-bottom:16px;">Profile</div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div>
+                <div style="font-size:12px;font-weight:500;margin-bottom:5px;color:#4A4440;">Display name</div>
+                <input style="font-family:'DM Sans',sans-serif;font-size:14px;padding:9px 12px;border:1px solid #E8E4DF;border-radius:8px;background:#fff;color:#1A1A1A;outline:none;width:100%;" value="Ji-hoon Kim">
+              </div>
+              <div>
+                <div style="font-size:12px;font-weight:500;margin-bottom:5px;color:#4A4440;">Email</div>
+                <input style="font-family:'DM Sans',sans-serif;font-size:14px;padding:9px 12px;border:1px solid #E8E4DF;border-radius:8px;background:#fff;color:#1A1A1A;outline:none;width:100%;" value="jihoon@company.io">
+              </div>
+              <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px;">
+                <button class="btn btn-outline">Cancel</button>
+                <button class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title" style="margin-bottom:16px;">Notifications</div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div><div style="font-size:13px;font-weight:500;">Weekly digest</div><div style="font-size:12px;color:#928A80;">Every Monday at 9 AM</div></div>
+                <div style="width:40px;height:22px;background:#FF6B35;border-radius:99px;position:relative;cursor:pointer;"><div style="width:16px;height:16px;background:white;border-radius:50%;position:absolute;top:3px;right:3px;box-shadow:0 1px 3px rgba(0,0,0,0.15);"></div></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div><div style="font-size:13px;font-weight:500;">Alert notifications</div><div style="font-size:12px;color:#928A80;">Immediate push alerts</div></div>
+                <div style="width:40px;height:22px;background:#FF6B35;border-radius:99px;position:relative;cursor:pointer;"><div style="width:16px;height:16px;background:white;border-radius:50%;position:absolute;top:3px;right:3px;box-shadow:0 1px 3px rgba(0,0,0,0.15);"></div></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div><div style="font-size:13px;font-weight:500;">Marketing emails</div><div style="font-size:12px;color:#928A80;">Product updates & tips</div></div>
+                <div style="width:40px;height:22px;background:#E8E4DF;border-radius:99px;position:relative;cursor:pointer;"><div style="width:16px;height:16px;background:white;border-radius:50%;position:absolute;top:3px;left:3px;box-shadow:0 1px 3px rgba(0,0,0,0.15);"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+<script>
+// ── Navigation ──
+const navItems = document.querySelectorAll('.nav-item[data-page]');
+const pages = document.querySelectorAll('.page');
+const topbarTitle = document.getElementById('topbarTitle');
+const titles = { overview: 'Overview', analytics: 'Analytics', users: 'Users', reports: 'Reports', settings: 'Settings' };
+
+navItems.forEach(item => {
+  item.addEventListener('click', () => {
+    const page = item.dataset.page;
+    navItems.forEach(n => n.classList.remove('active'));
+    item.classList.add('active');
+    pages.forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    topbarTitle.textContent = titles[page] || page;
+    if (page === 'analytics') setTimeout(drawWAU, 50);
+  });
+});
+
+// ── Sidebar toggle ──
+const sidebar = document.getElementById('sidebar');
+const toggleIcon = document.getElementById('toggleIcon');
+document.getElementById('sidebarToggle').addEventListener('click', () => {
+  sidebar.classList.toggle('collapsed');
+  const isCollapsed = sidebar.classList.contains('collapsed');
+  toggleIcon.setAttribute('d', isCollapsed ? 'M9 18l6-6-6-6' : 'M15 18l-6-6 6-6');
+});
+
+// ── Chart tabs ──
+document.querySelectorAll('.chart-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    tab.parentElement.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+  });
+});
+
+// ── Revenue Chart (line) ──
+function drawRevenue() {
+  const svg = document.getElementById('revenueChart');
+  if (!svg) return;
+  const W = 560, H = 200, pad = { top: 20, right: 20, bottom: 30, left: 48 };
+  const data = [2.1,3.4,2.8,4.2,3.8,5.1,4.4,6.2,5.8,7.1,6.5,8.2,7.8,9.4,8.1,10.2,9.6,11.4,10.8,12.1,11.4,13.2,12.8,14.1,13.6,15.2,14.4,16.1,15.8,17.2,16.5];
+  const max = Math.max(...data) * 1.1;
+  const xScale = i => pad.left + i * (W - pad.left - pad.right) / (data.length - 1);
+  const yScale = v => pad.top + (1 - v / max) * (H - pad.top - pad.bottom);
+
+  // Grid lines
+  let gridLines = '';
+  [0, 5, 10, 15, 20].forEach(v => {
+    const y = yScale(v);
+    gridLines += `<line x1="${pad.left}" y1="${y}" x2="${W - pad.right}" y2="${y}" stroke="#F4F1EC" stroke-width="1"/>`;
+    gridLines += `<text x="${pad.left - 6}" y="${y + 4}" font-family="DM Mono" font-size="9" fill="#928A80" text-anchor="end">$${v}K</text>`;
+  });
+
+  // Path
+  const pts = data.map((v, i) => `${xScale(i)},${yScale(v)}`).join(' L ');
+  const fillPts = `M ${xScale(0)},${yScale(data[0])} L ${pts.slice(pts.indexOf(',') + 1)} L ${xScale(data.length-1)},${H - pad.bottom} L ${xScale(0)},${H - pad.bottom} Z`;
+
+  // X labels
+  let xLabels = '';
+  const months = ['Jan 1','Jan 8','Jan 15','Jan 22','Jan 29'];
+  months.forEach((m, i) => {
+    const x = pad.left + i * (W - pad.left - pad.right) / 4;
+    xLabels += `<text x="${x}" y="${H - 6}" font-family="DM Sans" font-size="9" fill="#928A80" text-anchor="middle">${m}</text>`;
+  });
+
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#FF6B35" stop-opacity="0.15"/>
+        <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
+      </linearGradient>
+      <clipPath id="lineClip"><rect x="${pad.left}" y="${pad.top}" width="${W - pad.left - pad.right}" height="${H - pad.top - pad.bottom}" /></clipPath>
+    </defs>
+    ${gridLines}
+    <g clip-path="url(#lineClip)">
+      <path d="${fillPts}" fill="url(#lineGrad)"/>
+      <path d="M ${pts.replace(/ L /g,' L ')}" fill="none" stroke="#FF6B35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        stroke-dasharray="1000" stroke-dashoffset="1000">
+        <animate attributeName="stroke-dashoffset" from="1000" to="0" dur="1s" fill="freeze" calcMode="spline" keySplines="0.16 1 0.3 1"/>
+      </path>
+    </g>
+    ${xLabels}
+  `;
+}
+
+// ── WAU Bar Chart ──
+function drawWAU() {
+  const svg = document.getElementById('wauChart');
+  if (!svg) return;
+  const W = 600, H = 180, pad = { top: 16, right: 20, bottom: 28, left: 48 };
+  const data = [8.2, 9.1, 8.8, 10.4, 9.8, 11.2, 10.6, 12.1, 11.4, 13.2, 12.4, 14.1];
+  const labels = ['Oct 28','Nov 4','Nov 11','Nov 18','Nov 25','Dec 2','Dec 9','Dec 16','Dec 23','Dec 30','Jan 6','Jan 13'];
+  const max = Math.max(...data) * 1.15;
+  const bw = (W - pad.left - pad.right) / data.length;
+  const barW = bw * 0.55;
+
+  let bars = '', xLabels = '';
+  data.forEach((v, i) => {
+    const x = pad.left + i * bw + (bw - barW) / 2;
+    const barH = (v / max) * (H - pad.top - pad.bottom);
+    const y = H - pad.bottom - barH;
+    const color = i === data.length - 1 ? '#FF6B35' : '#E8E4DF';
+    const textColor = i === data.length - 1 ? '#FF6B35' : '#928A80';
+    bars += `<rect x="${x}" y="${H - pad.bottom}" width="${barW}" height="0" rx="4" fill="${color}">
+      <animate attributeName="height" from="0" to="${barH}" dur="${0.4 + i * 0.04}s" fill="freeze" calcMode="spline" keySplines="0.16 1 0.3 1"/>
+      <animate attributeName="y" from="${H - pad.bottom}" to="${y}" dur="${0.4 + i * 0.04}s" fill="freeze" calcMode="spline" keySplines="0.16 1 0.3 1"/>
+    </rect>`;
+    if (i % 3 === 0 || i === data.length - 1)
+      xLabels += `<text x="${x + barW/2}" y="${H - 8}" font-family="DM Sans" font-size="9" fill="${textColor}" text-anchor="middle">${labels[i]}</text>`;
+  });
+
+  // Y axis
+  let gridLines = '';
+  [0, 5, 10, 15].forEach(v => {
+    const y = H - pad.bottom - (v / max) * (H - pad.top - pad.bottom);
+    gridLines += `<line x1="${pad.left}" y1="${y}" x2="${W - pad.right}" y2="${y}" stroke="#F4F1EC" stroke-width="1"/>`;
+    gridLines += `<text x="${pad.left - 6}" y="${y + 4}" font-family="DM Mono" font-size="9" fill="#928A80" text-anchor="end">${v}K</text>`;
+  });
+
+  svg.innerHTML = gridLines + bars + xLabels;
+}
+
+// Init
+drawRevenue();
+</script>
+</body>
+</html>

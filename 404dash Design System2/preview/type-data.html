@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: #FAFAF8; padding: 20px; }
+.label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #928A80; margin-bottom: 8px; }
+.row { margin-bottom: 16px; }
+.metric-big { font-family: 'DM Mono', monospace; font-size: 48px; font-weight: 500; letter-spacing: -0.02em; color: #1A1A1A; line-height: 1; }
+.metric-mid { font-family: 'DM Mono', monospace; font-size: 30px; font-weight: 500; letter-spacing: -0.02em; color: #1A1A1A; }
+.metric-sm { font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 400; color: #1A1A1A; }
+.inline-row { display: flex; gap: 24px; align-items: baseline; flex-wrap: wrap; }
+.mono-label { font-family: 'DM Mono', monospace; font-size: 13px; color: #928A80; }
+.tag { background: #1C1C1E; color: #fff; font-family: 'DM Mono', monospace; font-size: 11px; padding: 2px 8px; border-radius: 4px; display: inline-block; }
+.divider { border: none; border-top: 1px solid #E8E4DF; margin: 12px 0; }
+</style>
+</head>
+<body>
+<div class="row">
+  <div class="label">Metric — Display (DM Mono)</div>
+  <div class="metric-big">$2,847,390</div>
+</div>
+<div class="row">
+  <div class="label">Metric — Medium</div>
+  <div class="metric-mid">48,291</div>
+</div>
+<hr class="divider">
+<div class="row">
+  <div class="label">Inline data values</div>
+  <div class="inline-row">
+    <div><div class="mono-label">requests/s</div><div class="metric-sm">1,284</div></div>
+    <div><div class="mono-label">p95 latency</div><div class="metric-sm">142ms</div></div>
+    <div><div class="mono-label">error rate</div><div class="metric-sm" style="color:#EF4444;">0.38%</div></div>
+    <div><div class="mono-label">uptime</div><div class="metric-sm" style="color:#22C55E;">99.97%</div></div>
+  </div>
+</div>
+<hr class="divider">
+<div class="row">
+  <div class="label">Code / Tag</div>
+  <span class="tag">v2.4.1</span>
+  &nbsp;
+  <span style="font-family:'DM Mono',monospace;font-size:13px;color:#1A1A1A;background:#F4F1EC;padding:2px 8px;border-radius:4px;">GET /api/metrics</span>
+</div>
+</body>
+</html>

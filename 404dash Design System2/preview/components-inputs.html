@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: #FAFAF8; padding: 20px; }
+.label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #928A80; margin-bottom: 6px; }
+.row { margin-bottom: 14px; }
+.divider { border: none; border-top: 1px solid #E8E4DF; margin: 12px 0; }
+.input-wrap { position: relative; display: inline-flex; align-items: center; }
+.input { font-family: 'DM Sans', sans-serif; font-size: 14px; color: #1A1A1A; background: #fff; border: 1px solid #E8E4DF; border-radius: 8px; padding: 9px 12px; outline: none; width: 220px; transition: border-color 150ms, box-shadow 150ms; }
+.input::placeholder { color: #B8B0A8; }
+.input:focus { border-color: #FF6B35; box-shadow: 0 0 0 3px rgba(255,107,53,0.12); }
+.input-icon { padding-left: 36px; }
+.input-icon-el { position: absolute; left: 10px; color: #928A80; pointer-events: none; }
+.input-sm { font-size: 13px; padding: 6px 10px; border-radius: 6px; width: 180px; }
+.input-error { border-color: #EF4444; }
+.input-error:focus { box-shadow: 0 0 0 3px rgba(239,68,68,0.12); }
+.error-msg { font-size: 12px; color: #DC2626; margin-top: 4px; }
+.select { font-family: 'DM Sans', sans-serif; font-size: 14px; color: #1A1A1A; background: #fff; border: 1px solid #E8E4DF; border-radius: 8px; padding: 9px 32px 9px 12px; outline: none; appearance: none; cursor: pointer; }
+.field-group { display: flex; flex-direction: column; gap: 4px; }
+.field-label { font-size: 13px; font-weight: 500; color: #1A1A1A; }
+</style>
+</head>
+<body>
+<div class="row">
+  <div class="label">Text Input States</div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start;">
+    <div class="field-group">
+      <div class="field-label">Default</div>
+      <input class="input" placeholder="Search metrics...">
+    </div>
+    <div class="field-group">
+      <div class="field-label">With icon</div>
+      <div class="input-wrap">
+        <svg class="input-icon-el" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input class="input input-icon" placeholder="Search...">
+      </div>
+    </div>
+    <div class="field-group">
+      <div class="field-label">Error</div>
+      <input class="input input-error" value="invalid@">
+      <div class="error-msg">Enter a valid email address</div>
+    </div>
+    <div class="field-group">
+      <div class="field-label">Disabled</div>
+      <input class="input" placeholder="Disabled" disabled style="opacity:0.45;cursor:not-allowed;">
+    </div>
+  </div>
+</div>
+<hr class="divider">
+<div class="row">
+  <div class="label">Select / Dropdown</div>
+  <div style="position:relative;display:inline-block;">
+    <select class="select">
+      <option>Last 7 days</option>
+      <option>Last 30 days</option>
+      <option>Last 90 days</option>
+      <option>Custom range</option>
+    </select>
+    <svg style="position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#928A80" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+</div>
+<hr class="divider">
+<div class="row">
+  <div class="label">Small / Dense</div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <input class="input input-sm" placeholder="Filter by name...">
+    <input class="input input-sm" placeholder="Min value" style="width:100px;">
+    <input class="input input-sm" placeholder="Max value" style="width:100px;">
+  </div>
+</div>
+</body>
+</html>

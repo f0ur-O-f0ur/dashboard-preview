@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: #FAFAF8; padding: 20px; }
+.label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #928A80; margin-bottom: 8px; }
+.row { margin-bottom: 16px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.divider { border: none; border-top: 1px solid #E8E4DF; margin: 12px 0; }
+.badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 6px; letter-spacing: 0.01em; }
+.badge-dot { width: 6px; height: 6px; border-radius: 50%; }
+.badge-success { background: #F0FDF4; color: #15803D; }
+.badge-warning { background: #FFFBEB; color: #B45309; }
+.badge-danger  { background: #FEF2F2; color: #DC2626; }
+.badge-info    { background: #EFF6FF; color: #2563EB; }
+.badge-neutral { background: #F4F1EC; color: #4A4440; }
+.badge-accent  { background: #FFF4EF; color: #E85520; }
+.badge-dark    { background: #1C1C1E; color: #C7C7CC; }
+.pill { display: inline-flex; align-items: center; font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 9999px; }
+.change-pos { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; color: #15803D; background: #F0FDF4; padding: 3px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 3px; }
+.change-neg { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; color: #DC2626; background: #FEF2F2; padding: 3px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 3px; }
+</style>
+</head>
+<body>
+<div class="label">Status Badges</div>
+<div class="row">
+  <span class="badge badge-success"><span class="badge-dot" style="background:#22C55E;"></span>Active</span>
+  <span class="badge badge-warning"><span class="badge-dot" style="background:#F5A623;"></span>Pending</span>
+  <span class="badge badge-danger"><span class="badge-dot" style="background:#EF4444;"></span>Failed</span>
+  <span class="badge badge-info"><span class="badge-dot" style="background:#3B82F6;"></span>Syncing</span>
+  <span class="badge badge-neutral">Archived</span>
+  <span class="badge badge-dark">Beta</span>
+</div>
+<hr class="divider">
+<div class="label">Category / Label Badges</div>
+<div class="row">
+  <span class="badge badge-accent">Revenue</span>
+  <span class="badge badge-info">API</span>
+  <span class="badge badge-neutral">Internal</span>
+  <span class="badge badge-neutral">v2.4.1</span>
+  <span class="pill badge-dark">Pro plan</span>
+</div>
+<hr class="divider">
+<div class="label">Delta / Change Indicators</div>
+<div class="row">
+  <span class="change-pos">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+    +12.4%
+  </span>
+  <span class="change-neg">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    −3.1%
+  </span>
+  <span class="change-pos">↑ $4,820</span>
+  <span class="change-neg">↓ 148 users</span>
+</div>
+</body>
+</html>

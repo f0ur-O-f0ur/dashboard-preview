@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: #FAFAF8; padding: 20px; }
+.label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #928A80; margin-bottom: 8px; }
+.row { margin-bottom: 16px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.divider { border: none; border-top: 1px solid #E8E4DF; margin: 12px 0; }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Sans', sans-serif; font-weight: 500; border: none; cursor: pointer; transition: all 150ms cubic-bezier(0.16,1,0.3,1); text-decoration: none; }
+.btn-primary { background: #FF6B35; color: #fff; font-size: 14px; padding: 9px 18px; border-radius: 8px; }
+.btn-primary:hover { background: #E85520; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255,107,53,0.35); }
+.btn-secondary { background: #fff; color: #1A1A1A; font-size: 14px; padding: 8px 18px; border-radius: 8px; border: 1px solid #E8E4DF; }
+.btn-secondary:hover { border-color: #D5CFC8; background: #F4F1EC; }
+.btn-ghost { background: transparent; color: #6B6358; font-size: 14px; padding: 8px 12px; border-radius: 8px; }
+.btn-ghost:hover { background: #F4F1EC; color: #1A1A1A; }
+.btn-danger { background: #FEF2F2; color: #DC2626; font-size: 14px; padding: 8px 18px; border-radius: 8px; border: 1px solid #FEE2E2; }
+.btn-sm { font-size: 12px; padding: 6px 12px; border-radius: 6px; }
+.btn-lg { font-size: 16px; padding: 12px 24px; border-radius: 10px; }
+</style>
+</head>
+<body>
+<div class="label">Primary</div>
+<div class="row">
+  <button class="btn btn-primary">Export report</button>
+  <button class="btn btn-primary btn-sm">Export</button>
+  <button class="btn btn-primary btn-lg">Get started</button>
+  <button class="btn btn-primary" style="opacity:0.4;cursor:not-allowed;">Disabled</button>
+</div>
+<hr class="divider">
+<div class="label">Secondary / Ghost / Danger</div>
+<div class="row">
+  <button class="btn btn-secondary">Add filter</button>
+  <button class="btn btn-ghost">Cancel</button>
+  <button class="btn btn-danger">Delete</button>
+</div>
+<hr class="divider">
+<div class="label">Icon Buttons</div>
+<div class="row">
+  <button class="btn btn-primary" style="padding:9px 14px;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    Download
+  </button>
+  <button class="btn btn-secondary" style="padding:8px 14px;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    Search
+  </button>
+  <button class="btn btn-ghost" style="padding:8px;border-radius:8px;border:1px solid #E8E4DF;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B6358" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </button>
+  <button class="btn btn-ghost" style="padding:8px;border-radius:8px;border:1px solid #E8E4DF;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B6358" stroke-width="1.5"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+  </button>
+</div>
+</body>
+</html>

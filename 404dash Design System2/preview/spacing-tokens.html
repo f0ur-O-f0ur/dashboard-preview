@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: #FAFAF8; padding: 20px; }
+.label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #928A80; margin-bottom: 8px; }
+.row { margin-bottom: 16px; }
+.space-row { display: flex; align-items: flex-end; gap: 8px; flex-wrap: wrap; }
+.space-item { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.space-block { background: #FF6B35; border-radius: 3px; opacity: 0.8; }
+.space-val { font-family: 'DM Mono', monospace; font-size: 10px; color: #928A80; }
+.radius-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.radius-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.radius-box { width: 40px; height: 40px; background: #1C1C1E; }
+.radius-val { font-family: 'DM Mono', monospace; font-size: 10px; color: #928A80; text-align: center; }
+.divider { border: none; border-top: 1px solid #E8E4DF; margin: 12px 0; }
+.shadow-row { display: flex; gap: 16px; flex-wrap: wrap; }
+.shadow-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.shadow-box { width: 56px; height: 40px; background: white; border-radius: 8px; }
+</style>
+</head>
+<body>
+<div class="row">
+  <div class="label">Spacing Scale (base 8px)</div>
+  <div class="space-row">
+    <div class="space-item"><div class="space-block" style="width:4px;height:4px;"></div><div class="space-val">4</div></div>
+    <div class="space-item"><div class="space-block" style="width:8px;height:8px;"></div><div class="space-val">8</div></div>
+    <div class="space-item"><div class="space-block" style="width:12px;height:12px;"></div><div class="space-val">12</div></div>
+    <div class="space-item"><div class="space-block" style="width:16px;height:16px;"></div><div class="space-val">16</div></div>
+    <div class="space-item"><div class="space-block" style="width:20px;height:20px;"></div><div class="space-val">20</div></div>
+    <div class="space-item"><div class="space-block" style="width:24px;height:24px;"></div><div class="space-val">24</div></div>
+    <div class="space-item"><div class="space-block" style="width:32px;height:32px;"></div><div class="space-val">32</div></div>
+    <div class="space-item"><div class="space-block" style="width:40px;height:40px;"></div><div class="space-val">40</div></div>
+    <div class="space-item"><div class="space-block" style="width:48px;height:48px;"></div><div class="space-val">48</div></div>
+    <div class="space-item"><div class="space-block" style="width:64px;height:64px;"></div><div class="space-val">64</div></div>
+  </div>
+</div>
+<hr class="divider">
+<div class="row">
+  <div class="label">Border Radius</div>
+  <div class="radius-row">
+    <div class="radius-item"><div class="radius-box" style="border-radius:4px;"></div><div class="radius-val">xs<br>4px</div></div>
+    <div class="radius-item"><div class="radius-box" style="border-radius:6px;"></div><div class="radius-val">sm<br>6px</div></div>
+    <div class="radius-item"><div class="radius-box" style="border-radius:8px;"></div><div class="radius-val">md<br>8px</div></div>
+    <div class="radius-item"><div class="radius-box" style="border-radius:12px;"></div><div class="radius-val">lg<br>12px</div></div>
+    <div class="radius-item"><div class="radius-box" style="border-radius:16px;"></div><div class="radius-val">xl<br>16px</div></div>
+    <div class="radius-item"><div class="radius-box" style="border-radius:24px;"></div><div class="radius-val">2xl<br>24px</div></div>
+    <div class="radius-item"><div class="radius-box" style="border-radius:9999px;"></div><div class="radius-val">full</div></div>
+  </div>
+</div>
+<hr class="divider">
+<div class="row">
+  <div class="label">Shadows</div>
+  <div class="shadow-row">
+    <div class="shadow-item"><div class="shadow-box" style="box-shadow:0 1px 2px rgba(0,0,0,0.05);"></div><div class="radius-val">sm</div></div>
+    <div class="shadow-item"><div class="shadow-box" style="box-shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 12px rgba(0,0,0,0.04);"></div><div class="radius-val">md (card)</div></div>
+    <div class="shadow-item"><div class="shadow-box" style="box-shadow:0 4px 8px rgba(0,0,0,0.08),0 12px 28px rgba(0,0,0,0.08);"></div><div class="radius-val">card hover</div></div>
+    <div class="shadow-item"><div class="shadow-box" style="box-shadow:0 4px 6px rgba(0,0,0,0.05),0 10px 30px rgba(0,0,0,0.08);"></div><div class="radius-val">lg</div></div>
+    <div class="shadow-item"><div class="shadow-box" style="box-shadow:0 20px 60px rgba(0,0,0,0.12);"></div><div class="radius-val">xl</div></div>
+  </div>
+</div>
+</body>
+</html>
